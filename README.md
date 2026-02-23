@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="messenger-crm-extension/banner.png" alt="Messenger CRM - Best CRM for Facebook Messenger" width="100%">
+  <img src="https://github.com/AleemIqbal/messenger-crm/blob/main/banner.png" alt="Messenger CRM - Best CRM for Facebook Messenger" width="100%">
 </p>
 
 <h1 align="center">💬 Messenger CRM — Smart CRM for Facebook Messenger</h1>
