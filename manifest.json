@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "Messenger CRM",
+  "version": "1.0",
+  "description": "Simple CRM for Messenger to mark conversations as Done, Pending, or Not Interested.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*.messenger.com/*",
+    "*://*.facebook.com/*"
+  ],
+  "icons": {
+    "16": "favicon.png",
+    "48": "favicon.png",
+    "128": "favicon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Messenger CRM Dashboard",
+    "default_icon": {
+      "16": "favicon.png",
+      "48": "favicon.png",
+      "128": "favicon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.messenger.com/*",
+        "*://*.facebook.com/messages/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "styles.css",
+        "dashboard.html",
+        "dashboard.css",
+        "dashboard.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

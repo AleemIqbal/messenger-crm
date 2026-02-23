@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger CRM Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">💬</span>
+                    <span class="logo-text">Messenger CRM</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <a href="#" class="nav-item active" data-page="contacts">
+                        <span class="nav-icon">👥</span>
+                        <span>Contacts</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="labels">
+                        <span class="nav-icon">🏷️</span>
+                        <span>Labels</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="templates">
+                        <span class="nav-icon">📝</span>
+                        <span>Templates</span>
+                    </a>
+
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Tools</div>
+                    <a href="#" class="nav-item" id="importExportBtn">
+                        <span class="nav-icon">📦</span>
+                        <span>Import/Export</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="settings">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="https://messenger.com" target="_blank" class="nav-item">
+                    <span class="nav-icon">🔗</span>
+                    <span>Open Messenger</span>
+                </a>
+                <div class="version">v1.0</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <h1 class="page-title" id="pageTitle">Contacts</h1>
+                </div>
+                <div class="header-center">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Search contacts..." />
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-secondary" id="refreshBtn">
+                        <span>🔄</span> Refresh
+                    </button>
+                    <button class="btn btn-primary" id="openMessengerBtn">
+                        <span>💬</span> Open Messenger
+                    </button>
+                </div>
+            </header>
+
+            <!-- ============ CONTACTS PAGE ============ -->
+            <div class="page-section active" id="page-contacts">
+                <!-- Stats Bar -->
+                <div class="stats-bar">
+                    <button class="stat-tab active" data-filter="all">
+                        <span class="stat-label">Total Contacts</span>
+                        <span class="stat-value" id="totalCount">0</span>
+                    </button>
+                    <button class="stat-tab stat-done" data-filter="done">
+                        <span class="stat-label">Done</span>
+                        <span class="stat-value" id="doneCount">0</span>
+                    </button>
+                    <button class="stat-tab stat-pending" data-filter="pending">
+                        <span class="stat-label">Pending</span>
+                        <span class="stat-value" id="pendingCount">0</span>
+                    </button>
+                    <button class="stat-tab stat-not-interested" data-filter="not_interested">
+                        <span class="stat-label">No Interest</span>
+                        <span class="stat-value" id="notInterestedCount">0</span>
+                    </button>
+                    <button class="stat-tab stat-unlabeled" data-filter="none">
+                        <span class="stat-label">Unlabeled</span>
+                        <span class="stat-value" id="unlabeledCount">0</span>
+                    </button>
+                </div>
+
+                <!-- Bulk Actions -->
+                <div class="bulk-actions" id="bulkActions" style="display: none;">
+                    <div class="bulk-info">
+                        <span id="selectedCount">0</span> selected
+                    </div>
+                    <div class="bulk-buttons">
+                        <button class="btn btn-sm btn-done" id="bulkDone">✓ Mark Done</button>
+                        <button class="btn btn-sm btn-pending" id="bulkPending">⏳ Mark Pending</button>
+                        <button class="btn btn-sm btn-not-interested" id="bulkNotInterested">✕ Not Interested</button>
+                        <button class="btn btn-sm btn-clear" id="bulkClear">Clear Status</button>
+                    </div>
+                </div>
+
+                <!-- Contacts Grid -->
+                <div class="contacts-container">
+                    <div class="contacts-grid" id="contactsGrid">
+                        <!-- Contacts will be rendered here -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-icon">📭</div>
+                        <h3>No contacts found</h3>
+                        <p>Start tracking conversations on Messenger to see them here.</p>
+                        <a href="https://messenger.com" target="_blank" class="btn btn-primary">Go to Messenger</a>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div class="loading-state" id="loadingState">
+                        <div class="spinner"></div>
+                        <p>Loading contacts...</p>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <button class="page-btn" id="prevPage" disabled>← Previous</button>
+                    <div class="page-numbers" id="pageNumbers"></div>
+                    <button class="page-btn" id="nextPage">Next →</button>
+                </div>
+            </div>
+
+            <!-- ============ LABELS PAGE ============ -->
+            <div class="page-section" id="page-labels">
+                <div class="page-toolbar">
+                    <p class="page-description">Manage your labels to organize conversations. Create custom labels with
+                        your own colors.</p>
+                    <button class="btn btn-primary" id="addLabelBtn">
+                        <span>+</span> Add Label
+                    </button>
+                </div>
+                <div class="labels-list" id="labelsList">
+                    <!-- Labels rendered by JS -->
+                </div>
+            </div>
+
+            <!-- ============ TEMPLATES PAGE ============ -->
+            <div class="page-section" id="page-templates">
+                <div class="page-toolbar">
+                    <p class="page-description">Quick message templates for faster replies. Use built-in templates or
+                        create your own.</p>
+                    <button class="btn btn-primary" id="addTemplateBtn">
+                        <span>+</span> Add Template
+                    </button>
+                </div>
+
+                <h3 class="section-heading">📋 Built-in Templates</h3>
+                <div class="templates-grid" id="builtinTemplates">
+                    <!-- Built-in templates rendered by JS -->
+                </div>
+
+                <h3 class="section-heading">✏️ My Templates</h3>
+                <div class="templates-grid" id="customTemplates">
+                    <!-- Custom templates rendered by JS -->
+                </div>
+                <div class="empty-state" id="customTemplatesEmpty" style="display: none;">
+                    <div class="empty-icon">📝</div>
+                    <h3>No custom templates yet</h3>
+                    <p>Click "Add Template" to create your first custom template.</p>
+                </div>
+            </div>
+
+            <!-- ============ SETTINGS PAGE ============ -->
+            <div class="page-section" id="page-settings">
+                <div class="page-toolbar">
+                    <p class="page-description">Customize how the CRM extension behaves in Messenger.</p>
+                </div>
+                <div class="settings-list">
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <h3>🎨 Label Color Mode</h3>
+                            <p>Choose how label colors are displayed on conversations in Messenger.</p>
+                        </div>
+                        <div class="settings-toggle-group" id="colorModeToggle">
+                            <div class="settings-toggle-option" data-value="icon">
+                                <div class="settings-toggle-preview">
+                                    <div class="toggle-preview-icon"
+                                        style="background:#10b981;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;">
+                                        ✓</div>
+                                    <span style="color:var(--text-secondary);font-size:13px;">Conversation</span>
+                                </div>
+                                <div class="settings-toggle-label">Use in Icon</div>
+                                <div class="settings-toggle-desc">Color fills the status icon badge</div>
+                            </div>
+                            <div class="settings-toggle-option" data-value="background">
+                                <div class="settings-toggle-preview">
+                                    <div
+                                        style="background:rgba(16,185,129,0.15);border-radius:8px;padding:4px 12px;display:flex;align-items:center;gap:6px;">
+                                        <div
+                                            style="width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:10px;color:#333;">
+                                            ✓</div>
+                                        <span style="color:var(--text-secondary);font-size:13px;">Conversation</span>
+                                    </div>
+                                </div>
+                                <div class="settings-toggle-label">Color Conversations</div>
+                                <div class="settings-toggle-desc">Color tints the entire conversation row</div>
+                            </div>
+                            <div class="settings-toggle-option selected" data-value="symbol">
+                                <div class="settings-toggle-preview">
+                                    <div
+                                        style="background:#fff;border:2px solid #ddd;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#10b981;font-weight:bold;">
+                                        ✓</div>
+                                    <span style="color:var(--text-secondary);font-size:13px;">Conversation</span>
+                                </div>
+                                <div class="settings-toggle-label">Color Symbol</div>
+                                <div class="settings-toggle-desc">White icon, color on the symbol only</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Import/Export Modal -->
+    <div class="modal-overlay" id="importExportModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Import/Export Data</h3>
+                <button class="modal-close" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>📤 Export Data</h4>
+                    <p>Download all your CRM data as a JSON file.</p>
+                    <button class="btn btn-primary" id="exportBtn">Export Data</button>
+                </div>
+                <div class="modal-divider"></div>
+                <div class="modal-section">
+                    <h4>📥 Import Data</h4>
+                    <p>Upload a previously exported JSON file.</p>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" />
+                    <button class="btn btn-secondary" id="importBtn">Choose File</button>
+                    <span class="file-name" id="fileName"></span>
+                </div>
+                <div class="modal-message" id="modalMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="context-menu" id="contextMenu" style="display: none;">
+        <div class="context-item" data-action="done">✓ Mark Done</div>
+        <div class="context-item" data-action="pending">⏳ Mark Pending</div>
+        <div class="context-item" data-action="not_interested">✕ Not Interested</div>
+        <div class="context-divider"></div>
+        <div class="context-item" data-action="clear">Clear Status</div>
+        <div class="context-item" data-action="open">🔗 Open in Messenger</div>
+    </div>
+
+    <!-- Label Modal -->
+    <div class="modal-overlay" id="labelModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="labelModalTitle">Add Label</h3>
+                <button class="modal-close" id="closeLabelModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Label Name</label>
+                    <input type="text" id="labelNameInput" class="form-input" placeholder="Enter label name..."
+                        maxlength="30" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Icon</label>
+                    <div class="icon-swatches" id="iconSwatches">
+                        <div class="icon-swatch selected" data-icon="🏷️">🏷️</div>
+                        <div class="icon-swatch" data-icon="✓">✓</div>
+                        <div class="icon-swatch" data-icon="⏳">⏳</div>
+                        <div class="icon-swatch" data-icon="✕">✕</div>
+                        <div class="icon-swatch" data-icon="⭐">⭐</div>
+                        <div class="icon-swatch" data-icon="🔥">🔥</div>
+                        <div class="icon-swatch" data-icon="💰">💰</div>
+                        <div class="icon-swatch" data-icon="💎">💎</div>
+                        <div class="icon-swatch" data-icon="🎯">🎯</div>
+                        <div class="icon-swatch" data-icon="🚀">🚀</div>
+                        <div class="icon-swatch" data-icon="❤️">❤️</div>
+                        <div class="icon-swatch" data-icon="👤">👤</div>
+                        <div class="icon-swatch" data-icon="📦">📦</div>
+                        <div class="icon-swatch" data-icon="📞">📞</div>
+                        <div class="icon-swatch" data-icon="🔔">🔔</div>
+                        <div class="icon-swatch" data-icon="⚡">⚡</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Color</label>
+                    <div class="color-swatches" id="colorSwatches">
+                        <div class="color-swatch selected" data-color="#10b981" style="background:#10b981"></div>
+                        <div class="color-swatch" data-color="#f59e0b" style="background:#f59e0b"></div>
+                        <div class="color-swatch" data-color="#ef4444" style="background:#ef4444"></div>
+                        <div class="color-swatch" data-color="#6366f1" style="background:#6366f1"></div>
+                        <div class="color-swatch" data-color="#8b5cf6" style="background:#8b5cf6"></div>
+                        <div class="color-swatch" data-color="#ec4899" style="background:#ec4899"></div>
+                        <div class="color-swatch" data-color="#14b8a6" style="background:#14b8a6"></div>
+                        <div class="color-swatch" data-color="#06b6d4" style="background:#06b6d4"></div>
+                        <div class="color-swatch" data-color="#3b82f6" style="background:#3b82f6"></div>
+                        <div class="color-swatch" data-color="#f97316" style="background:#f97316"></div>
+                        <div class="color-swatch" data-color="#84cc16" style="background:#84cc16"></div>
+                        <div class="color-swatch" data-color="#6b7280" style="background:#6b7280"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancelLabelBtn">Cancel</button>
+                    <button class="btn btn-primary" id="saveLabelBtn">Save Label</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Modal -->
+    <div class="modal-overlay" id="templateModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="templateModalTitle">Add Template</h3>
+                <button class="modal-close" id="closeTemplateModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Template Title</label>
+                    <input type="text" id="templateTitleInput" class="form-input" placeholder="Enter template title..."
+                        maxlength="50" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea id="templateBodyInput" class="form-textarea" placeholder="Enter your template message..."
+                        rows="5"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancelTemplateBtn">Cancel</button>
+                    <button class="btn btn-primary" id="saveTemplateBtn">Save Template</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

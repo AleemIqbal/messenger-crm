@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=400, initial-scale=1.0">
+  <title>Messenger CRM Dashboard</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="dashboard">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-left">
+        <div class="logo">
+          <span class="logo-icon">💬</span>
+          <h1>Messenger CRM</h1>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats Cards -->
+    <section class="stats-grid">
+      <div class="stat-card stat-done">
+        <div class="stat-icon">✓</div>
+        <div class="stat-content">
+          <span class="stat-number" id="statDone">0</span>
+          <span class="stat-label">Done</span>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-content">
+          <span class="stat-number" id="statPending">0</span>
+          <span class="stat-label">Pending</span>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+      <div class="stat-card stat-not-interested">
+        <div class="stat-icon">✕</div>
+        <div class="stat-content">
+          <span class="stat-number" id="statNotInterested">0</span>
+          <span class="stat-label">No Interest</span>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+      <div class="stat-card stat-total">
+        <div class="stat-icon">📋</div>
+        <div class="stat-content">
+          <span class="stat-number" id="statTotal">0</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="main-content">
+      <!-- Conversion Rate -->
+      <div class="card conversion-card">
+        <h3 class="card-title">Conversion Rate</h3>
+        <div class="conversion-chart">
+          <svg class="ring-chart" viewBox="0 0 36 36">
+            <path class="ring-bg" d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="ring-progress" id="conversionRing" stroke-dasharray="0, 100" d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="conversion-center">
+            <span class="conversion-percent" id="conversionPercent">0%</span>
+          </div>
+        </div>
+        <p class="conversion-subtitle">Done / Total Tracked</p>
+      </div>
+
+      <!-- Activity Timeline -->
+      <div class="card activity-card">
+        <h3 class="card-title">Recent Activity</h3>
+        <div class="activity-list" id="activityList">
+          <div class="activity-empty">
+            <span class="empty-icon">📭</span>
+            <span>No recent activity</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+      <button class="action-btn action-primary" id="openDashboard">
+        <span class="action-icon">📊</span>
+        <span>Full Dashboard</span>
+      </button>
+      <button class="action-btn action-secondary" id="openMessenger">
+        <span class="action-icon">💬</span>
+        <span>Messenger</span>
+      </button>
+    </section>
+
+    <!-- Secondary Actions -->
+    <section class="quick-actions" style="margin-top: -8px;">
+      <button class="action-btn action-secondary" id="exportData" style="flex: 1;">
+        <span class="action-icon">📤</span>
+        <span>Export</span>
+      </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <span>Messenger CRM v1.0</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>
